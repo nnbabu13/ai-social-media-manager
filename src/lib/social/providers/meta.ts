@@ -119,11 +119,14 @@ export class MetaProvider implements SocialProvider {
   async getAvailableAccounts(
     token: OAuthToken
   ): Promise<SocialAccountCandidate[]> {
-    const url = new URL(`${GRAPH_API_BASE}/me/accounts`);
-    url.searchParams.set("access_token", token.access_token);
-    url.searchParams.set("fields", "id,name,category,picture{url}");
+    const accounts: SocialAccountCandidate[] = [];
 
-    const data = await metaFetch<{
+    // 1. Get Facebook Pages
+    const pagesUrl = new URL(`${GRAPH_API_BASE}/me/accounts`);
+    pagesUrl.searchParams.set("access_token", token.access_token);
+    pagesUrl.searchParams.set("fields", "id,name,category,picture{url}");
+
+    const pagesData = await metaFetch<{
       data: Array<{
         id: string;
         name: string;
@@ -131,14 +134,45 @@ export class MetaProvider implements SocialProvider {
         picture?: { data?: { url?: string } };
         access_token?: string;
       }>;
-    }>(url.toString());
+    }>(pagesUrl.toString());
 
-    return data.data.map((page) => ({
-      platform_account_id: page.id,
-      account_name: page.name,
-      account_type: "facebook_page" as const,
-      profile_image_url: page.picture?.data?.url,
-    }));
+    for (const page of pagesData.data) {
+      accounts.push({
+        platform_account_id: page.id,
+        account_name: page.name,
+        account_type: "facebook_page" as const,
+        profile_image_url: page.picture?.data?.url,
+      });
+
+      // 2. Check for linked Instagram account
+      try {
+        const igUrl = new URL(`${GRAPH_API_BASE}/${page.id}`);
+        igUrl.searchParams.set("access_token", token.access_token);
+        igUrl.searchParams.set("fields", "instagram_business_account{id,name,profile_picture_url}");
+
+        const igData = await metaFetch<{
+          instagram_business_account?: {
+            id: string;
+            name?: string;
+            profile_picture_url?: string;
+          };
+        }>(igUrl.toString());
+
+        if (igData.instagram_business_account) {
+          const ig = igData.instagram_business_account;
+          accounts.push({
+            platform_account_id: ig.id,
+            account_name: ig.name || page.name,
+            account_type: "instagram_professional" as const,
+            profile_image_url: ig.profile_picture_url,
+          });
+        }
+      } catch {
+        // Page may not have Instagram linked — skip
+      }
+    }
+
+    return accounts;
   }
 
   async getAccountProfile(params: {
