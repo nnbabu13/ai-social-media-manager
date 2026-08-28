@@ -158,36 +158,29 @@ export function AccountsPageClient({ businessId, businessName, initialAccounts }
         <CardHeader>
           <CardTitle>Connect your accounts</CardTitle>
           <CardDescription>
-            We&apos;ll connect your account and import supported information so your AI can understand your existing social presence.
+            Connect your accounts or rescan to discover newly added Pages and Instagram accounts.
             We will not publish or reply automatically during this setup phase.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex gap-4">
-          {!hasFacebook && (
-            <Button
-              onClick={() => handleConnect("facebook")}
-              disabled={loading === "facebook"}
-              variant="outline"
-              className="gap-2"
-            >
-              {loading === "facebook" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Facebook className="h-4 w-4" />}
-              Connect Facebook
-            </Button>
-          )}
-          {!hasInstagram && (
-            <Button
-              onClick={() => handleConnect("instagram")}
-              disabled={loading === "instagram"}
-              variant="outline"
-              className="gap-2"
-            >
-              {loading === "instagram" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Instagram className="h-4 w-4" />}
-              Connect Instagram
-            </Button>
-          )}
-          {hasFacebook && hasInstagram && (
-            <p className="text-sm text-muted-foreground">All supported platforms are connected.</p>
-          )}
+        <CardContent className="flex gap-4 flex-wrap">
+          <Button
+            onClick={() => handleConnect("facebook")}
+            disabled={loading === "facebook"}
+            variant="outline"
+            className="gap-2"
+          >
+            {loading === "facebook" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Facebook className="h-4 w-4" />}
+            {hasFacebook ? "Re-scan Facebook" : "Connect Facebook"}
+          </Button>
+          <Button
+            onClick={() => handleConnect("instagram")}
+            disabled={loading === "instagram"}
+            variant="outline"
+            className="gap-2"
+          >
+            {loading === "instagram" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Instagram className="h-4 w-4" />}
+            {hasInstagram ? "Re-scan Instagram" : "Connect Instagram"}
+          </Button>
         </CardContent>
       </Card>
 
