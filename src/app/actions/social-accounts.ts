@@ -275,11 +275,11 @@ export async function getSocialAccount(accountId: string) {
 }
 
 // ========== Disconnect account ==========
-export async function disconnectSocialAccount(
-  accountId: string,
-  userId: string
-) {
+export async function disconnectSocialAccount(accountId: string) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+  const userId = user.id;
 
   const { data: account, error: fetchErr } = await supabase
     .from("social_accounts")
@@ -333,11 +333,11 @@ export async function disconnectSocialAccount(
 }
 
 // ========== Reconnect account ==========
-export async function reconnectSocialAccount(
-  accountId: string,
-  userId: string
-) {
+export async function reconnectSocialAccount(accountId: string) {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+  const userId = user.id;
 
   const { data: account, error: fetchErr } = await supabase
     .from("social_accounts")

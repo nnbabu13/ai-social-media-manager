@@ -94,7 +94,7 @@ export function AccountsPageClient({ businessId, businessName, initialAccounts }
     if (!confirm("Disconnect this account? Your AI manager will stop receiving new information from this account.")) return;
     setLoading(accountId);
     try {
-      await disconnectSocialAccount(accountId, "");
+      await disconnectSocialAccount(accountId);
       setAccounts((prev) =>
         prev.map((a) => (a.id === accountId ? { ...a, status: "disconnected", connection_status: "disconnected" } : a))
       );
@@ -123,7 +123,7 @@ export function AccountsPageClient({ businessId, businessName, initialAccounts }
   const handleReconnect = async (accountId: string) => {
     setLoading(accountId);
     try {
-      const { url } = await reconnectSocialAccount(accountId, "");
+      const { url } = await reconnectSocialAccount(accountId);
       window.location.href = url;
     } catch (err) {
       setMessage({ type: "error", text: err instanceof Error ? err.message : "Failed to reconnect" });
@@ -235,10 +235,12 @@ export function AccountsPageClient({ businessId, businessName, initialAccounts }
                   <Button
                     size="sm"
                     variant="ghost"
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     onClick={() => handleDisconnect(account.id)}
                     disabled={loading === account.id}
                   >
-                    <Unlink className="h-4 w-4" />
+                    <Unlink className="h-4 w-4 mr-1" />
+                    Disconnect
                   </Button>
                 </div>
               </CardContent>
