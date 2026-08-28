@@ -45,32 +45,34 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (accounts.length === 1) {
-      const candidate = accounts[0];
-      const { accountId } = await connectSocialAccount({
-        businessId: result.businessId,
-        platform: candidate.platform_account_id ? result.provider as any : "facebook",
-        platformAccountId: candidate.platform_account_id,
-        accountName: candidate.account_name,
-        username: candidate.username,
-        accountType: candidate.account_type,
-        profileUrl: candidate.profile_url,
-        profileImageUrl: candidate.profile_image_url,
-        accessToken: result.token.access_token,
-        tokenExpiresIn: result.token.expires_in,
-        userId: user.id,
-      });
+    const connectedIds: string[] = [];
 
-      runInitialSync(accountId, result.businessId, user.id).catch(() => {});
+    for (const candidate of accounts) {
+      try {
+        const { accountId } = await connectSocialAccount({
+          businessId: result.businessId,
+          platform: candidate.platform_account_id ? result.provider as any : "facebook",
+          platformAccountId: candidate.platform_account_id,
+          accountName: candidate.account_name,
+          username: candidate.username,
+          accountType: candidate.account_type,
+          profileUrl: candidate.profile_url,
+          profileImageUrl: candidate.profile_image_url,
+          accessToken: result.token.access_token,
+          tokenExpiresIn: result.token.expires_in,
+          userId: user.id,
+        });
 
-      return NextResponse.redirect(
-        new URL(`/accounts?connected=true&id=${accountId}`, request.url)
-      );
+        connectedIds.push(accountId);
+        runInitialSync(accountId, result.businessId, user.id).catch(() => {});
+      } catch {
+        // Continue connecting other accounts even if one fails
+      }
     }
 
     return NextResponse.redirect(
       new URL(
-        `/accounts/select?business_id=${result.businessId}&provider=${result.provider}`,
+        `/accounts?connected=true&count=${connectedIds.length}`,
         request.url
       )
     );
