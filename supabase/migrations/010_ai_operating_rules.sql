@@ -97,68 +97,68 @@ ALTER TABLE ai_action_audit_log ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view their own AI operating rules"
   ON ai_operating_rules FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own AI operating rules"
   ON ai_operating_rules FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own AI operating rules"
   ON ai_operating_rules FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can delete their own AI operating rules"
   ON ai_operating_rules FOR DELETE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own custom AI rules"
   ON custom_ai_rules FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own custom AI rules"
   ON custom_ai_rules FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own custom AI rules"
   ON custom_ai_rules FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can delete their own custom AI rules"
   ON custom_ai_rules FOR DELETE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own AI escalation rules"
   ON ai_escalation_rules FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own AI escalation rules"
   ON ai_escalation_rules FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own AI escalation rules"
   ON ai_escalation_rules FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can delete their own AI escalation rules"
   ON ai_escalation_rules FOR DELETE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own autonomy configs"
   ON autonomy_configs FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own autonomy configs"
   ON autonomy_configs FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own autonomy configs"
   ON autonomy_configs FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own AI action audit logs"
   ON ai_action_audit_log FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own AI action audit logs"
   ON ai_action_audit_log FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));

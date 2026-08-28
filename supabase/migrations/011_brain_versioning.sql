@@ -22,13 +22,13 @@ ALTER TABLE brain_versions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own brain versions"
   ON brain_versions FOR SELECT
   USING (business_id IN (
-    SELECT id FROM businesses WHERE user_id = auth.uid()
+    SELECT business_id FROM business_members WHERE user_id = auth.uid()
   ));
 
 CREATE POLICY "Users can insert their own brain versions"
   ON brain_versions FOR INSERT
   WITH CHECK (business_id IN (
-    SELECT id FROM businesses WHERE user_id = auth.uid()
+    SELECT business_id FROM business_members WHERE user_id = auth.uid()
   ));
 
 -- Function to get current brain version

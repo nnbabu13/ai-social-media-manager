@@ -83,40 +83,40 @@ ALTER TABLE strategy_versions ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view their own social strategies"
   ON social_strategies FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own social strategies"
   ON social_strategies FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own social strategies"
   ON social_strategies FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can delete their own social strategies"
   ON social_strategies FOR DELETE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own content pillars"
   ON content_pillars FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own content pillars"
   ON content_pillars FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can update their own content pillars"
   ON content_pillars FOR UPDATE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can delete their own content pillars"
   ON content_pillars FOR DELETE
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can view their own strategy versions"
   ON strategy_versions FOR SELECT
-  USING (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  USING (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
 
 CREATE POLICY "Users can insert their own strategy versions"
   ON strategy_versions FOR INSERT
-  WITH CHECK (business_id IN (SELECT id FROM businesses WHERE user_id = auth.uid()));
+  WITH CHECK (business_id IN (SELECT business_id FROM business_members WHERE user_id = auth.uid()));
