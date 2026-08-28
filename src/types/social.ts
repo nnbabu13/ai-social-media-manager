@@ -20,6 +20,7 @@ export interface SocialAccountCandidate {
   account_type: SocialAccountType;
   profile_url?: string;
   profile_image_url?: string;
+  access_token?: string;
 }
 
 export interface NormalizedSocialAccount {

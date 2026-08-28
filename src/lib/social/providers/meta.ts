@@ -149,13 +149,14 @@ export class MetaProvider implements SocialProvider {
         try {
           const igUrl = new URL(`${GRAPH_API_BASE}/${page.id}`);
           igUrl.searchParams.set("access_token", page.access_token);
-          igUrl.searchParams.set("fields", "instagram_business_account{id,name,profile_picture_url}");
+          igUrl.searchParams.set("fields", "instagram_business_account{id,name,profile_picture_url,access_token}");
 
           const igData = await metaFetch<{
             instagram_business_account?: {
               id: string;
               name?: string;
               profile_picture_url?: string;
+              access_token?: string;
             };
           }>(igUrl.toString());
 
@@ -166,6 +167,7 @@ export class MetaProvider implements SocialProvider {
               account_name: ig.name || page.name,
               account_type: "instagram_professional" as const,
               profile_image_url: ig.profile_picture_url,
+              access_token: ig.access_token,
             });
           }
         } catch {

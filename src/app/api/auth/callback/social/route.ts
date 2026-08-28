@@ -49,6 +49,9 @@ export async function GET(request: NextRequest) {
 
     for (const candidate of accounts) {
       try {
+        // Use Instagram-specific token if available, otherwise use user token
+        const tokenToUse = candidate.access_token || result.token.access_token;
+
         const { accountId } = await connectSocialAccount({
           businessId: result.businessId,
           platform: candidate.platform_account_id ? result.provider as any : "facebook",
@@ -58,7 +61,7 @@ export async function GET(request: NextRequest) {
           accountType: candidate.account_type,
           profileUrl: candidate.profile_url,
           profileImageUrl: candidate.profile_image_url,
-          accessToken: result.token.access_token,
+          accessToken: tokenToUse,
           tokenExpiresIn: result.token.expires_in,
           userId: user.id,
         });
